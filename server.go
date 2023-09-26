@@ -1,8 +1,8 @@
 package main
 
 import (
+	"graphql_sample/graph"
 	"log"
-	"my_gql_server/graph"
 	"net/http"
 	"os"
 
