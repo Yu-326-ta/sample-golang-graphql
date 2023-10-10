@@ -88,3 +88,4 @@ models:
   DateTime:
     model:
       - github.com/99designs/gqlgen/graphql.Time
+      - github.com/Yu-326-ta/sample-golang-graphql/graph/model.MyURL
