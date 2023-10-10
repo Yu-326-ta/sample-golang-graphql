@@ -18,7 +18,12 @@ func (r *mutationResolver) AddProjectV2ItemByID(ctx context.Context, input model
 
 // Repository is the resolver for the repository field.
 func (r *queryResolver) Repository(ctx context.Context, name string, owner string) (*model.Repository, error) {
-	panic(fmt.Errorf("not implemented: Repository - repository"))
+	user, err := r.Srv.GetUserByName(ctx, owner)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.Srv.GetRepositoryByNameOwner(ctx, user.ID, name)
 }
 
 // User is the resolver for the user field.
