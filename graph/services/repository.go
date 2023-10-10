@@ -15,15 +15,16 @@ type repositoryService struct {
 
 func convertRepository(repository *db.Repository) *model.Repository {
 	return &model.Repository{
-		ID:    repository.ID,
-		Owner: &model.User{ID: repository.Owner},
-		Name:  repository.Name,
+		ID:        repository.ID,
+		Owner:     &model.User{ID: repository.Owner},
+		Name:      repository.Name,
+		CreatedAt: repository.CreatedAt,
 	}
 }
 
 func (r *repositoryService) GetRepositoryByNameOwner(ctx context.Context, owner, name string) (*model.Repository, error) {
 	repository, err := db.Repositories(
-		qm.Select(db.RepositoryColumns.ID, db.RepositoryColumns.Name, db.RepositoryColumns.Owner), // select id, name, owner
+		qm.Select(db.RepositoryColumns.ID, db.RepositoryColumns.Name, db.RepositoryColumns.Owner, db.RepositoryColumns.CreatedAt), // select id, name, owner
 		db.RepositoryWhere.Owner.EQ(owner),
 		db.RepositoryWhere.Name.EQ(name),
 	).One(ctx, r.exec)
