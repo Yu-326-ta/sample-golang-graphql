@@ -36,11 +36,20 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 	panic(fmt.Errorf("not implemented: Node - node"))
 }
 
+// Owner is the resolver for the owner field.
+func (r *repositoryResolver) Owner(ctx context.Context, obj *model.Repository) (*model.User, error) {
+	return r.Srv.GetUserById(ctx, obj.Owner.ID)
+}
+
 // Mutation returns internal.MutationResolver implementation.
 func (r *Resolver) Mutation() internal.MutationResolver { return &mutationResolver{r} }
 
 // Query returns internal.QueryResolver implementation.
 func (r *Resolver) Query() internal.QueryResolver { return &queryResolver{r} }
 
+// Repository returns internal.RepositoryResolver implementation.
+func (r *Resolver) Repository() internal.RepositoryResolver { return &repositoryResolver{r} }
+
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type repositoryResolver struct{ *Resolver }
