@@ -13,6 +13,7 @@ type UserService interface {
 }
 type RepositoryService interface {
 	GetRepositoryByNameOwner(ctx context.Context, name string, owner string) (*model.Repository, error)
+	GetRepositoryById(ctx context.Context, id string) (*model.Repository, error)
 }
 
 type Services interface {
