@@ -95,3 +95,11 @@ models:
     fields:
       owner:
         resolver: true
+      issue:
+        resolver: true
+      issues:
+        resolver: true
+      pullRequest:
+        resolver: true
+      pullRequests:
+        resolver: true
