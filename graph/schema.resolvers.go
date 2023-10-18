@@ -13,6 +13,11 @@ import (
 	"strings"
 )
 
+// Author is the resolver for the author field.
+func (r *issueResolver) Author(ctx context.Context, obj *model.Issue) (*model.User, error) {
+	return r.Srv.GetUserById(ctx, obj.Author.ID)
+}
+
 // AddProjectV2ItemByID is the resolver for the addProjectV2ItemById field.
 func (r *mutationResolver) AddProjectV2ItemByID(ctx context.Context, input model.AddProjectV2ItemByIDInput) (*model.AddProjectV2ItemByIDPayload, error) {
 	panic(fmt.Errorf("not implemented: AddProjectV2ItemByID - addProjectV2ItemById"))
@@ -43,6 +48,8 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 		return r.Srv.GetUserById(ctx, id)
 	case "REPO":
 		return r.Srv.GetRepositoryById(ctx, id)
+	case "ISSUE":
+		return r.Srv.GetRepositoryById(ctx, id)
 	default:
 		return nil, errors.New("invalid ID")
 	}
@@ -60,7 +67,7 @@ func (r *repositoryResolver) Issue(ctx context.Context, obj *model.Repository, n
 
 // Issues is the resolver for the issues field.
 func (r *repositoryResolver) Issues(ctx context.Context, obj *model.Repository, after *string, before *string, first *int, last *int) (*model.IssueConnection, error) {
-	panic(fmt.Errorf("not implemented: Issues - issues"))
+	return r.Srv.ListIssueInRepository(ctx, obj.ID, after, before, first, last)
 }
 
 // PullRequest is the resolver for the pullRequest field.
@@ -73,6 +80,9 @@ func (r *repositoryResolver) PullRequests(ctx context.Context, obj *model.Reposi
 	panic(fmt.Errorf("not implemented: PullRequests - pullRequests"))
 }
 
+// Issue returns internal.IssueResolver implementation.
+func (r *Resolver) Issue() internal.IssueResolver { return &issueResolver{r} }
+
 // Mutation returns internal.MutationResolver implementation.
 func (r *Resolver) Mutation() internal.MutationResolver { return &mutationResolver{r} }
 
@@ -82,6 +92,7 @@ func (r *Resolver) Query() internal.QueryResolver { return &queryResolver{r} }
 // Repository returns internal.RepositoryResolver implementation.
 func (r *Resolver) Repository() internal.RepositoryResolver { return &repositoryResolver{r} }
 
+type issueResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type repositoryResolver struct{ *Resolver }
