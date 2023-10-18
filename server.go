@@ -35,11 +35,12 @@ func main() {
 
 	service := services.New(db)
 
-	boil.DebugMode = true
-
 	srv := handler.NewDefaultServer(internal.NewExecutableSchema(internal.Config{Resolvers: &graph.Resolver{
-		Srv: service,
+		Srv:     service,
+		Loaders: graph.NewLoaders(service),
 	}}))
+
+	boil.DebugMode = true
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

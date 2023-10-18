@@ -1,7 +1,10 @@
 package graph
 
-import "graphql_sample/graph/services"
+import (
+	"graphql_sample/graph/services"
+)
 
 type Resolver struct {
 	Srv services.Services
+	*Loaders
 }

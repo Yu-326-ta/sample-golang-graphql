@@ -10,6 +10,7 @@ import (
 type UserService interface {
 	GetUserByName(ctx context.Context, name string) (*model.User, error)
 	GetUserById(ctx context.Context, id string) (*model.User, error)
+	ListUsersByID(ctx context.Context, IDs []string) ([]*model.User, error)
 }
 type RepositoryService interface {
 	GetRepositoryByNameOwner(ctx context.Context, name string, owner string) (*model.Repository, error)
