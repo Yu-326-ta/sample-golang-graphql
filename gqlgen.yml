@@ -91,6 +91,12 @@ models:
   # URI:
   #   model:
   #     - github.com/Yu-326-ta/sample-golang-graphql/graph/model.MyURL
+  User:
+    fields:
+      projectV2:
+        resolver: true
+      projectV2s:
+        resolver: true
   Repository:
     fields:
       owner:
